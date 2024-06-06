@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "serverpropertiesreload",
+	"version": "${version}",
+	"name": "Minecraft server.properties reload",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/serverpropertiesreload/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.mat0u5.serverpropertiesreload.MinecraftServerpropertiesReload"
+		],
+		"fabric-datagen": [
+			"net.mat0u5.serverpropertiesreload.MinecraftServerpropertiesReloadDataGenerator"
+		]
+	},
+	"mixins": [
+		"serverpropertiesreload.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
