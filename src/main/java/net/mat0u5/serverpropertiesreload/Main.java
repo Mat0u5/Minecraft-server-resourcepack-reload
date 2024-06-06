@@ -2,6 +2,7 @@ package net.mat0u5.serverpropertiesreload;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.mat0u5.serverpropertiesreload.utils.ModRegistries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +12,7 @@ public class Main implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Hello Fabric world!");
+		ModRegistries.registerModStuff();
+		LOGGER.info("Initializing...");
 	}
 }
