@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "net.mat0u5.serverpropertiesreload.mixin",
+	"package": "net.mat0u5.serverresourcepackreload.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"ExampleMixin"

@@ -1,9 +1,9 @@
 {
 	"schemaVersion": 1,
-	"id": "serverpropertiesreload",
+	"id": "serverresourcepackreload",
 	"version": "${version}",
-	"name": "Minecraft server.properties reload",
-	"description": "This mod reloads server.properties without the need to restart the entire server!",
+	"name": "Minecraft server resourcepack reload",
+	"description": "This mod reloads server resourcepack without the need to restart the entire server!",
 	"authors": [
 		"Mat0u5"
 	],
@@ -12,21 +12,21 @@
 		"sources": "https://github.com/Mat0u5/Minecraft-server.properties-reload"
 	},
 	"license": "MIT",
-	"icon": "assets/serverpropertiesreload/icon.png",
+	"icon": "assets/serverresourcepackreload/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.mat0u5.serverpropertiesreload.Main"
+			"net.mat0u5.serverresourcepackreload.Main"
 		],
 		"client": [
-			"net.mat0u5.serverpropertiesreload.MainClient"
+			"net.mat0u5.serverresourcepackreload.MainClient"
 		],
 		"fabric-datagen": [
-			"net.mat0u5.serverpropertiesreload.MainDataGenerator"
+			"net.mat0u5.serverresourcepackreload.MainDataGenerator"
 		]
 	},
 	"mixins": [
-		"serverpropertiesreload.mixins.json"
+		"serverresourcepackreload.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.11",

@@ -1,4 +1,4 @@
-package net.mat0u5.serverpropertiesreload;
+package net.mat0u5.serverresourcepackreload;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;

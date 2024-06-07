@@ -1,4 +1,4 @@
-package net.mat0u5.serverpropertiesreload;
+package net.mat0u5.serverresourcepackreload;
 
 import net.fabricmc.api.ClientModInitializer;
 
