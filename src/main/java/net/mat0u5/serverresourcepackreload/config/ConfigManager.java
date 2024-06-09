@@ -38,7 +38,7 @@ public class ConfigManager {
         }
     }
 
-    private void loadProperties() {
+    public void loadProperties() {
         try (InputStream input = new FileInputStream(filePath)) {
             properties.load(input);
         } catch (IOException ex) {

@@ -17,9 +17,14 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.include.com.google.common.collect.ImmutableList;
 
 import java.util.Collection;
+import java.util.Optional;
 
 
 public class Resourcepack {
+    //variables for checking if the RP has updated
+    private static String lastRPURL = "";
+    private static String lastRPSHA = "";
+
     public static void register(CommandDispatcher<ServerCommandSource> serverCommandSourceCommandDispatcher,
                                 CommandRegistryAccess commandRegistryAccess,
                                 CommandManager.RegistrationEnvironment registrationEnvironment) {
@@ -128,12 +133,41 @@ public class Resourcepack {
         }
     }
     public static void sendNewRPMessage(PlayerEntity player) {
-        player.sendMessage(Text.translatable("§6New Resourcepack version available! ").append(Text.translatable("§9§nClick to apply.").setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resourcepack reload")))), false);
+        player.sendMessage(Text.translatable("§6New Resourcepack version available! ").append(Text.translatable("§9§nClick to apply.").setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resourcepack reload")))).append(Text.translatable("\n§c(NOTE: applying new resourcepacks while the server is running often results in you not being able to hear certain game sounds!)")), false);
     }
     private static String parseRPString(String str) {
         while (str.startsWith("\"") && str.endsWith("\"")) {
             str = str.substring(1,str.length()-1);
         }
         return str;
+    }
+
+    public static void checkResourcepackUpdate(MinecraftServer server) {
+        String currentRPURL = Main.config.getProperty("resourcepack.url");
+        String currentRPSHA = Main.config.getProperty("resourcepack.sha1");
+        if (lastRPURL.equalsIgnoreCase(currentRPURL)  && lastRPSHA.equalsIgnoreCase(currentRPSHA)) return;
+        if (!currentRPURL.isEmpty() && !currentRPSHA.isEmpty()) {
+            if (!lastRPURL.isEmpty() && !lastRPURL.isEmpty()) {
+                Collection<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
+                for (ServerPlayerEntity player : players) {
+                    sendNewRPMessage(player);
+                }
+                System.out.println("New Resourcepack Found!");
+                System.out.println("-URL change: " +lastRPURL+" -> "+currentRPURL);
+                System.out.println("-SHA change: " +lastRPSHA+" -> "+currentRPSHA);
+            }
+            lastRPURL = currentRPURL;
+            lastRPSHA = currentRPSHA;
+        }
+    }
+    public static MinecraftServer.ServerResourcePackProperties getServerResourcePackProperties(MinecraftServer server) {
+        Optional<MinecraftServer.ServerResourcePackProperties> rp = server.getResourcePackProperties();
+        if (rp.isPresent()) {
+            return rp.get();
+        }
+        else {
+            server.getPlayerManager().broadcast(Text.translatable("§4Resource pack not found!"),false);
+        }
+        return null;
     }
 }
