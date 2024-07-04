@@ -92,7 +92,7 @@ public class Resourcepack {
         //Send message to all players
         Collection<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
         for (ServerPlayerEntity player : players) {
-            sendNewRPMessage(player);
+            if (player.hasPermissionLevel(2)) sendNewRPMessage(player);
         }
         return 1;
     }
@@ -150,7 +150,7 @@ public class Resourcepack {
             if (!lastRPURL.isEmpty() && !lastRPURL.isEmpty()) {
                 Collection<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
                 for (ServerPlayerEntity player : players) {
-                    sendNewRPMessage(player);
+                    if (player.hasPermissionLevel(2)) sendNewRPMessage(player);
                 }
                 System.out.println("New Resourcepack Found!");
                 System.out.println("-URL change: " +lastRPURL+" -> "+currentRPURL);
