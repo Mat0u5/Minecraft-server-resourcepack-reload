@@ -20,12 +20,15 @@ public class Events {
     }
 
     private static void onPlayerJoin(MinecraftServer server, ServerPlayerEntity player) {
-        //Sends the message that a new RP version is available
-        Main.config.loadProperties();
-        MinecraftServer.ServerResourcePackProperties rp = Resourcepack.getServerResourcePackProperties(server);
-        if (!rp.url().equalsIgnoreCase(Main.config.getProperty("resourcepack.url")) || !rp.hash().equalsIgnoreCase(Main.config.getProperty("resourcepack.sha1"))) {
-            if (player.hasPermissionLevel(2)) Resourcepack.sendNewRPMessage(player);
-        }
+        try {
+            //Sends the message that a new RP version is available
+            Main.config.loadProperties();
+            MinecraftServer.ServerResourcePackProperties rp = Resourcepack.getServerResourcePackProperties(server);
+            if (rp == null) return;
+            if (!rp.url().equalsIgnoreCase(Main.config.getProperty("resourcepack.url")) || !rp.hash().equalsIgnoreCase(Main.config.getProperty("resourcepack.sha1"))) {
+                if (player.hasPermissionLevel(2)) Resourcepack.sendNewRPMessage(player);
+            }
+        }catch(Exception e){}
     }
 
     private static void onServerTick(MinecraftServer server) {
