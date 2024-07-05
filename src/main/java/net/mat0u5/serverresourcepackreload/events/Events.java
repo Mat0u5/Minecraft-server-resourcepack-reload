@@ -24,7 +24,7 @@ public class Events {
         Main.config.loadProperties();
         MinecraftServer.ServerResourcePackProperties rp = Resourcepack.getServerResourcePackProperties(server);
         if (!rp.url().equalsIgnoreCase(Main.config.getProperty("resourcepack.url")) || !rp.hash().equalsIgnoreCase(Main.config.getProperty("resourcepack.sha1"))) {
-            Resourcepack.sendNewRPMessage(player);
+            if (player.hasPermissionLevel(2)) Resourcepack.sendNewRPMessage(player);
         }
     }
 
