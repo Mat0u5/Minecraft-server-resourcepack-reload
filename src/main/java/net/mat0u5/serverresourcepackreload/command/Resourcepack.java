@@ -18,6 +18,7 @@ import org.spongepowered.include.com.google.common.collect.ImmutableList;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.UUID;
 
 
 public class Resourcepack {
@@ -92,13 +93,13 @@ public class Resourcepack {
         //Send message to all players
         Collection<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
         for (ServerPlayerEntity player : players) {
-            if (player.hasPermissionLevel(2)) sendNewRPMessage(player);
+            sendNewRPMessage(player);
         }
         return 1;
     }
     public static void reloadResourcePack(PlayerEntity player, String newRPurl, String newRPSHA1) {
         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-        serverPlayer.networkHandler.sendPacket(new net.minecraft.network.packet.s2c.play.ResourcePackSendS2CPacket(newRPurl,newRPSHA1,true,Text.translatable("New resource pack update!")));
+        serverPlayer.networkHandler.sendPacket(new net.minecraft.network.packet.s2c.common.ResourcePackSendS2CPacket(UUID.nameUUIDFromBytes(newRPSHA1.getBytes()),newRPurl,newRPSHA1,true, Optional.of(Text.translatable("New resource pack update!"))));
     }
     public static void reloadLatestResourcePack(MinecraftServer server, PlayerEntity player) {
         reloadResourcePack(player, Main.config.getProperty("resourcepack.url"),Main.config.getProperty("resourcepack.sha1"));
@@ -109,16 +110,16 @@ public class Resourcepack {
             PlayerEntity player = (PlayerEntity) targets.toArray()[0];
             if (self != null) {//sent by player
                 if (self != player) {
-                    if (RPType != "newRP") self.sendMessage(Text.translatable("§6Applying "+RPType+" resourcepack to " +player.getEntityName()+ "..."));
-                    else self.sendMessage(Text.translatable("§6Sending message to " +player.getEntityName()+ "..."));
+                    if (RPType != "newRP") self.sendMessage(Text.translatable("§6Applying "+RPType+" resourcepack to " +player.getNameForScoreboard()+ "..."));
+                    else self.sendMessage(Text.translatable("§6Sending message to " +player.getNameForScoreboard() + "..."));
                 }
                 else {
                     if (RPType != "newRP") self.sendMessage(Text.translatable("§6Applying "+RPType+" resourcepack..."));
                 }
             }
             else {//sent by console
-                if (RPType != "newRP") System.out.println("Applying "+RPType+" resourcepack to " +player.getEntityName()+ "...");
-                else System.out.println("Sending message to " +player.getEntityName()+ "...");
+                if (RPType != "newRP") System.out.println("Applying "+RPType+" resourcepack to " +player.getNameForScoreboard()+ "...");
+                else System.out.println("Sending message to " +player.getNameForScoreboard()+ "...");
             }
         }
         else {
@@ -150,7 +151,7 @@ public class Resourcepack {
             if (!lastRPURL.isEmpty() && !lastRPURL.isEmpty()) {
                 Collection<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
                 for (ServerPlayerEntity player : players) {
-                    if (player.hasPermissionLevel(2)) sendNewRPMessage(player);
+                    sendNewRPMessage(player);
                 }
                 System.out.println("New Resourcepack Found!");
                 System.out.println("-URL change: " +lastRPURL+" -> "+currentRPURL);
