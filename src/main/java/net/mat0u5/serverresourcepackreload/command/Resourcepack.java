@@ -134,7 +134,7 @@ public class Resourcepack {
         }
     }
     public static void sendNewRPMessage(PlayerEntity player) {
-        player.sendMessage(Text.translatable("§6New Resourcepack version available! ").append(Text.translatable("§9§nClick to apply.").setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resourcepack reload")))).append(Text.translatable("\n§c(NOTE: applying new resourcepacks while the server is running often results in you not being able to hear certain game sounds!)")), false);
+        player.sendMessage(Text.translatable("§6New Resourcepack version available! ").append(Text.translatable("§9§nClick to apply.").setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resourcepack reload")))), false);
     }
     private static String parseRPString(String str) {
         while (str.startsWith("\"") && str.endsWith("\"")) {
