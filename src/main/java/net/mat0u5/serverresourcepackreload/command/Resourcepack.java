@@ -42,7 +42,18 @@ public class Resourcepack {
                 .then(CommandManager.argument("targets", EntityArgumentType.players()).executes(context -> Resourcepack.executeApplyCustom((ServerCommandSource)context.getSource(), EntityArgumentType.getPlayers(context, "targets"), StringArgumentType.getString(context, "url"), StringArgumentType.getString(context, "sha1"))))))))));
 
         serverCommandSourceCommandDispatcher.register((LiteralArgumentBuilder)((LiteralArgumentBuilder)((LiteralArgumentBuilder)CommandManager.literal("resourcepack")
-                .then(CommandManager.literal("setLatestResourcepack").requires(source -> source.hasPermissionLevel(2)).then(CommandManager.argument("url", StringArgumentType.string()).then(CommandManager.argument("sha1", StringArgumentType.string()).executes(context -> Resourcepack.executeSetNewRP((ServerCommandSource)context.getSource(), StringArgumentType.getString(context, "url"), StringArgumentType.getString(context, "sha1")))))))));
+                .then(CommandManager.literal("setLatestResourcepack").requires(source -> source.hasPermissionLevel(2)).then(CommandManager.argument("url", StringArgumentType.string())
+                        .then(CommandManager.argument("sha1", StringArgumentType.string())
+                                .executes(context -> Resourcepack.executeSetNewRP(
+                                        context.getSource(), StringArgumentType.getString(context, "url"), StringArgumentType.getString(context, "sha1"),""
+                                ))
+                                .then(CommandManager.argument("commitMessage", StringArgumentType.greedyString())
+                                        .executes(context -> Resourcepack.executeSetNewRP(
+                                                context.getSource(), StringArgumentType.getString(context, "url"), StringArgumentType.getString(context, "sha1"), StringArgumentType.getString(context, "commitMessage")
+                                        ))
+                                )
+                        )
+                )))));
 
     }
     public static int execute(ServerCommandSource source, Collection<? extends PlayerEntity> targets) throws CommandSyntaxException {
@@ -78,7 +89,7 @@ public class Resourcepack {
         }
         return 1;
     }
-    public static int executeSetNewRP(ServerCommandSource source, String newRPurl, String newRPSHA1)  throws CommandSyntaxException {
+    public static int executeSetNewRP(ServerCommandSource source, String newRPurl, String newRPSHA1, String commitMessage)  throws CommandSyntaxException {
         MinecraftServer server = source.getServer();
         final PlayerEntity self = source.getPlayer();
 
@@ -93,7 +104,7 @@ public class Resourcepack {
         //Send message to all players
         Collection<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
         for (ServerPlayerEntity player : players) {
-            sendNewRPMessage(player);
+            sendNewRPMessage(player, commitMessage);
         }
         return 1;
     }
@@ -135,6 +146,18 @@ public class Resourcepack {
     }
     public static void sendNewRPMessage(PlayerEntity player) {
         player.sendMessage(Text.translatable("§6New Resourcepack version available! ").append(Text.translatable("§9§nClick to apply.").setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resourcepack reload")))), false);
+    }
+    public static void sendNewRPMessage(PlayerEntity player, String commitMessage) {
+        if (commitMessage.isEmpty()) {
+            sendNewRPMessage(player);
+            return;
+        }
+        player.sendMessage(Text.translatable("§6New Resourcepack version available! ")
+                .append(Text.translatable("§9§nClick to apply.")
+                        .setStyle(
+                                Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resourcepack reload"))
+                                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of("§6§nCommit message:\n§r"+commitMessage)))
+                        )), false);
     }
     private static String parseRPString(String str) {
         while (str.startsWith("\"") && str.endsWith("\"")) {
