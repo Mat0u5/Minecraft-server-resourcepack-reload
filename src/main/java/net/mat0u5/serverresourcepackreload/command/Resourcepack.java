@@ -22,10 +22,6 @@ import java.util.UUID;
 
 
 public class Resourcepack {
-    //variables for checking if the RP has updated
-    private static String lastRPURL = "";
-    private static String lastRPSHA = "";
-
     public static void register(CommandDispatcher<ServerCommandSource> serverCommandSourceCommandDispatcher,
                                 CommandRegistryAccess commandRegistryAccess,
                                 CommandManager.RegistrationEnvironment registrationEnvironment) {
@@ -85,7 +81,7 @@ public class Resourcepack {
 
         sendCommandFeedback(self,targets,"newRP");
         for(PlayerEntity player : targets) {
-            sendNewRPMessage(player);
+            sendNewRPMessage(player, Main.commitMessage);
         }
         return 1;
     }
@@ -97,6 +93,7 @@ public class Resourcepack {
         newRPSHA1 = parseRPString(newRPSHA1);
         Main.config.setProperty("resourcepack.url",newRPurl);
         Main.config.setProperty("resourcepack.sha1",newRPSHA1);
+        Main.commitMessage = commitMessage;
 
         if (self != null) self.sendMessage(Text.translatable("§6New latest resourcepack has been set!"));
         else System.out.println("New latest resourcepack has been set!");
@@ -164,25 +161,6 @@ public class Resourcepack {
             str = str.substring(1,str.length()-1);
         }
         return str;
-    }
-
-    public static void checkResourcepackUpdate(MinecraftServer server) {
-        String currentRPURL = Main.config.getProperty("resourcepack.url");
-        String currentRPSHA = Main.config.getProperty("resourcepack.sha1");
-        if (lastRPURL.equalsIgnoreCase(currentRPURL)  && lastRPSHA.equalsIgnoreCase(currentRPSHA)) return;
-        if (!currentRPURL.isEmpty() && !currentRPSHA.isEmpty()) {
-            if (!lastRPURL.isEmpty() && !lastRPURL.isEmpty()) {
-                Collection<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
-                for (ServerPlayerEntity player : players) {
-                    sendNewRPMessage(player);
-                }
-                System.out.println("New Resourcepack Found!");
-                System.out.println("-URL change: " +lastRPURL+" -> "+currentRPURL);
-                System.out.println("-SHA change: " +lastRPSHA+" -> "+currentRPSHA);
-            }
-            lastRPURL = currentRPURL;
-            lastRPSHA = currentRPSHA;
-        }
     }
     public static MinecraftServer.ServerResourcePackProperties getServerResourcePackProperties(MinecraftServer server) {
         Optional<MinecraftServer.ServerResourcePackProperties> rp = server.getResourcePackProperties();

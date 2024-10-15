@@ -22,7 +22,7 @@ public class Events {
             MinecraftServer.ServerResourcePackProperties rp = Resourcepack.getServerResourcePackProperties(server);
             if (rp == null) return;
             if (!rp.url().equalsIgnoreCase(Main.config.getProperty("resourcepack.url")) || !rp.hash().equalsIgnoreCase(Main.config.getProperty("resourcepack.sha1"))) {
-                Resourcepack.sendNewRPMessage(player);
+                Resourcepack.sendNewRPMessage(player, Main.commitMessage);
             }
         }catch(Exception e){}
     }

@@ -12,6 +12,7 @@ public class Main implements ModInitializer {
 	public static final String MOD_ID = "serverresourcepackreload";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static ConfigManager config;
+	public static String commitMessage = "";
 
 	@Override
 	public void onInitialize() {
