@@ -95,7 +95,7 @@ public class Resourcepack {
         Main.config.setProperty("resourcepack.sha1",newRPSHA1);
         Main.commitMessage = commitMessage;
 
-        if (self != null) self.sendMessage(Text.translatable("§6New latest resourcepack has been set!"));
+        if (self != null) self.sendMessage(Text.translatable("§6New latest resourcepack has been set!"), false);
         else System.out.println("New latest resourcepack has been set!");
 
         //Send message to all players
@@ -118,11 +118,11 @@ public class Resourcepack {
             PlayerEntity player = (PlayerEntity) targets.toArray()[0];
             if (self != null) {//sent by player
                 if (self != player) {
-                    if (RPType != "newRP") self.sendMessage(Text.translatable("§6Applying "+RPType+" resourcepack to " +player.getNameForScoreboard()+ "..."));
-                    else self.sendMessage(Text.translatable("§6Sending message to " +player.getNameForScoreboard() + "..."));
+                    if (RPType != "newRP") self.sendMessage(Text.translatable("§6Applying "+RPType+" resourcepack to " +player.getNameForScoreboard()+ "..."), false);
+                    else self.sendMessage(Text.translatable("§6Sending message to " +player.getNameForScoreboard() + "..."), false);
                 }
                 else {
-                    if (RPType != "newRP") self.sendMessage(Text.translatable("§6Applying "+RPType+" resourcepack..."));
+                    if (RPType != "newRP") self.sendMessage(Text.translatable("§6Applying "+RPType+" resourcepack..."), false);
                 }
             }
             else {//sent by console
@@ -132,8 +132,8 @@ public class Resourcepack {
         }
         else {
             if (self != null) {//sent by player
-                if (RPType != "newRP") self.sendMessage(Text.translatable("§6Applying "+RPType+" resourcepack to multiple players..."));
-                else self.sendMessage(Text.translatable("§6Sending message to multiple players..."));
+                if (RPType != "newRP") self.sendMessage(Text.translatable("§6Applying "+RPType+" resourcepack to multiple players..."), false);
+                else self.sendMessage(Text.translatable("§6Sending message to multiple players..."), false);
             }
             else {//sent by console
                 if (RPType != "newRP") System.out.println("Applying "+ RPType +" resourcepack to multiple players...");
